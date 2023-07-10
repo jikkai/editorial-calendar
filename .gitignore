@@ -1,0 +1,7 @@
+target
+**/node_modules
+
+index.node
+**/.DS_Store
+npm-debug.log*
+contributions.svg
