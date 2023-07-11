@@ -34,7 +34,8 @@ fn draw(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     const BORDER_SIZE: u32 = 1;
     const TOTAL_COLS: u32 = 54;
     const TOTAL_ROWS: u32 = 7;
-    const WHITE_BORDER_SIZE: u32 = 1;
+    // const WHITE_BORDER_SIZE: u32 = 1;
+    const WHITE_BORDER_SIZE: u32 = 0;
 
     // 计算视图框和图像大小
     let viewbox_width = (TOTAL_COLS + WHITE_BORDER_SIZE * 2) * SQUARE_SIZE;
