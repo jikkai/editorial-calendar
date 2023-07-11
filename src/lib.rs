@@ -7,19 +7,27 @@ use std::io::BufWriter;
 // 根据值选择相应的颜色
 fn get_color(value: u32) -> &'static str {
     match value {
-        0 => "#ebedf0",
-        1 => "#c6e48b",
-        2 => "#7bc96f",
-        3 => "#239a3b",
-        _ => "#196127",
+        0 => "#d0d0d0",
+        1 => "#9b9b9b",
+        2 => "#a5a5a5",
+        3 => "#5a5a5a",
+        _ => "#090909",
+        // 0 => "#ebedf0",
+        // 1 => "#c6e48b",
+        // 2 => "#7bc96f",
+        // 3 => "#239a3b",
+        // _ => "#196127",
     }
 }
 
 fn draw(mut cx: FunctionContext) -> JsResult<JsUndefined> {
-    let input = cx.argument::<JsString>(0)?;
-    let str = input.value(&mut cx);
+    let arg_data = cx.argument::<JsString>(0)?;
+    let str = arg_data.value(&mut cx);
     let json_str = str.as_str();
-    let data: Vec<u32> = serde_json::from_str(json_str).unwrap();
+    let use_data: Vec<u32> = serde_json::from_str(json_str).unwrap();
+
+    let arg_output = cx.argument::<JsString>(1)?;
+    let use_output = arg_output.value(&mut cx);
 
     // 每个方格的大小为 10x10
     const SQUARE_SIZE: u32 = 10;
@@ -45,7 +53,7 @@ fn draw(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     document = document.add(white_border);
 
     // 绘制方格和填充颜色
-    for (i, value) in data.iter().enumerate() {
+    for (i, value) in use_data.iter().enumerate() {
         let col = i as u32 / TOTAL_ROWS;
         let row = i as u32 % TOTAL_ROWS;
 
@@ -63,7 +71,7 @@ fn draw(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     }
 
     // 将 SVG 文档保存到文件
-    let file = File::create("contributions.svg").unwrap();
+    let file = File::create(use_output).unwrap();
     let writer = BufWriter::new(file);
     svg::write(writer, &document).unwrap();
 
